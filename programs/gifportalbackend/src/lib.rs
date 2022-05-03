@@ -41,6 +41,7 @@ pub mod gifportalbackend {
         for item in gif_list {
             if item.gif_link == gif_link {
                 item.upvoted_users.push(*user.to_account_info().key);
+                item.vote_count += 1;
             }
         }
         Ok(())
@@ -54,6 +55,7 @@ pub mod gifportalbackend {
         for item in gif_list {
             if item.gif_link == gif_link {
                 item.downvoted_users.push(*user.to_account_info().key);
+                item.vote_count -= 1;
             }
         }
         Ok(())
@@ -86,7 +88,7 @@ pub struct StartStuffOff<'info> {
     //      In this case, it's the user calling the function.
     // We then say space = 9000 which will allocate 9000 bytes of space for our account. 
     //      You can change this # if you wanted, but, 9000 bytes is enough for the program we'll be building here!
-    #[account(init, payer = user, space = 20000)]
+    #[account(init, payer = user, space = 9000)]
     pub base_account: Account<'info, BaseAccount>,
     // Allow access to a mutable reference
     #[account(mut)]
@@ -140,7 +142,7 @@ pub struct ItemStruct {
     pub user_address: Pubkey,
     pub upvoted_users: Vec<Pubkey>,
     pub downvoted_users: Vec<Pubkey>,
-    pub vote_count: u32,
+    pub vote_count: i32,
 }
 
 // Tell Solana what we want to store on this account.
