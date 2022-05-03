@@ -86,7 +86,7 @@ pub struct StartStuffOff<'info> {
     //      In this case, it's the user calling the function.
     // We then say space = 9000 which will allocate 9000 bytes of space for our account. 
     //      You can change this # if you wanted, but, 9000 bytes is enough for the program we'll be building here!
-    #[account(init, payer = user, space = 9000)]
+    #[account(init, payer = user, space = 20000)]
     pub base_account: Account<'info, BaseAccount>,
     // Allow access to a mutable reference
     #[account(mut)]
