@@ -94,6 +94,7 @@ pub mod gifportalbackend {
                 for downvoted_user in downvoted_users_clone {
                     if downvoted_user == *user.to_account_info().key {
                         item.downvoted_users.remove(index);
+                        item.vote_count += 1;
                     }
                     index += 1;
                 }
