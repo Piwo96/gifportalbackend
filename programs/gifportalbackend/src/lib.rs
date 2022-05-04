@@ -48,6 +48,7 @@ pub mod gifportalbackend {
                 for downvoted_user in downvoted_users_clone {
                     if downvoted_user == *user.to_account_info().key {
                         item.downvoted_users.remove(index);
+                        item.vote_count += 1;
                     }
                     index += 1;
                 }
@@ -72,6 +73,7 @@ pub mod gifportalbackend {
                 for upvoted_user in upvoted_users_clone {
                     if upvoted_user == *user.to_account_info().key {
                         item.upvoted_users.remove(index);
+                        item.vote_count -= 1;
                     }
                     index += 1;
                 }

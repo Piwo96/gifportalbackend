@@ -8,7 +8,10 @@ url = "https://anchor.projectserum.com"
 
 [provider]
 cluster = "devnet"
-wallet = "/users/philipp/.config/solana/id.json"
+## Apple
+# wallet = "/users/philipp/.config/solana/id.json"
+## windows
+wallet = "/home/philipp/.config/solana/id.json"
 
 [scripts]
 test = "node tests/gifportalbackend.js"
