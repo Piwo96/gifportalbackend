@@ -42,7 +42,17 @@ pub mod gifportalbackend {
             if item.gif_link == gif_link {
                 item.upvoted_users.push(*user.to_account_info().key);
                 item.vote_count += 1;
+
+                let mut index: usize = 0;
+                let downvoted_users_clone = item.downvoted_users.clone();
+                for downvoted_user in downvoted_users_clone {
+                    if downvoted_user == *user.to_account_info().key {
+                        item.downvoted_users.remove(index);
+                    }
+                    index += 1;
+                }
             }
+            
         }
         Ok(())
     }
@@ -56,6 +66,15 @@ pub mod gifportalbackend {
             if item.gif_link == gif_link {
                 item.downvoted_users.push(*user.to_account_info().key);
                 item.vote_count -= 1;
+
+                let mut index: usize = 0;
+                let upvoted_users_clone = item.upvoted_users.clone();
+                for upvoted_user in upvoted_users_clone {
+                    if upvoted_user == *user.to_account_info().key {
+                        item.upvoted_users.remove(index);
+                    }
+                    index += 1;
+                }
             }
         }
         Ok(())
