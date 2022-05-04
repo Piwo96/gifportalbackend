@@ -42,17 +42,28 @@ pub mod gifportalbackend {
             if item.gif_link == gif_link {
                 item.upvoted_users.push(*user.to_account_info().key);
                 item.vote_count += 1;
+            }
+        }
+        Ok(())
+    }
 
+    pub fn cancle_upvote_gif(ctx: Context<CancleUpvoteGif>, gif_link: String) -> Result <()> {
+        let base_account = &mut ctx.accounts.base_account;
+        let user = &ctx.accounts.user;
+        let gif_list = &mut base_account.gif_list;
+
+        for item in gif_list {
+            if item.gif_link == gif_link {
                 let mut index: usize = 0;
-                let downvoted_users_clone = item.downvoted_users.clone();
-                for downvoted_user in downvoted_users_clone {
-                    if downvoted_user == *user.to_account_info().key {
-                        item.downvoted_users.remove(index);
+                let upvoted_users_clone = item.upvoted_users.clone();
+                for upvoted_user in upvoted_users_clone {
+                    if upvoted_user == *user.to_account_info().key {
+                        item.upvoted_users.remove(index);
+                        item.vote_count -= 1;
                     }
                     index += 1;
                 }
             }
-            
         }
         Ok(())
     }
@@ -66,12 +77,23 @@ pub mod gifportalbackend {
             if item.gif_link == gif_link {
                 item.downvoted_users.push(*user.to_account_info().key);
                 item.vote_count -= 1;
+            }
+        }
+        Ok(())
+    }
 
+    pub fn cancle_downvote_gif(ctx: Context<CancleDownvoteGif>, gif_link: String) -> Result <()> {
+        let base_account = &mut ctx.accounts.base_account;
+        let user = &ctx.accounts.user;
+        let gif_list = &mut base_account.gif_list;
+
+        for item in gif_list {
+            if item.gif_link == gif_link {
                 let mut index: usize = 0;
-                let upvoted_users_clone = item.upvoted_users.clone();
-                for upvoted_user in upvoted_users_clone {
-                    if upvoted_user == *user.to_account_info().key {
-                        item.upvoted_users.remove(index);
+                let downvoted_users_clone = item.downvoted_users.clone();
+                for downvoted_user in downvoted_users_clone {
+                    if downvoted_user == *user.to_account_info().key {
+                        item.downvoted_users.remove(index);
                     }
                     index += 1;
                 }
@@ -135,7 +157,25 @@ pub struct UpvoteGif<'info> {
 }
 
 #[derive(Accounts)]
+pub struct CancleUpvoteGif<'info> {
+    // Allow access to a mutable reference
+    #[account(mut)]
+    pub base_account: Account<'info, BaseAccount>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+}
+
+#[derive(Accounts)]
 pub struct DownvoteGif<'info> {
+    // Allow access to a mutable reference
+    #[account(mut)]
+    pub base_account: Account<'info, BaseAccount>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+}
+
+#[derive(Accounts)]
+pub struct CancleDownvoteGif<'info> {
     // Allow access to a mutable reference
     #[account(mut)]
     pub base_account: Account<'info, BaseAccount>,
