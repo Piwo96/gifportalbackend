@@ -106,7 +106,7 @@ pub mod gifportalbackend {
     pub fn remove_gif(ctx: Context<RemoveGif>, gif_link: String) -> Result <()> {
         let base_account = &mut ctx.accounts.base_account;
         let user = &ctx.accounts.user;
-        // Clone gif_list to use it as an iterator as a multi-use would cause a borrowd move error
+        // Clone gif_list to use it as an iterator as a multi-use would cause a borrowed move error
         let cloned_gif_list = base_account.gif_list.clone();
         let mut index: usize = 0;
 
